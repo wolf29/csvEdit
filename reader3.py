@@ -22,7 +22,9 @@
 #  
 #  
 import csv
-
+row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
+rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
+#[0,22,2,4,6,15,16,11,18,19,20,25,26,27,28,29,30,31]
 filename=''
 
 def main():
@@ -47,17 +49,22 @@ def titleblock(filename):
 				writer.writerow(row)
 
 def labels(filename):
+	row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
+	rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 	with open('labels_'+filename, 'wb') as labels:
 		writer = csv.writer(labels)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
 			counter = 0
 			for counter,row in enumerate(reader):
-				if counter == 7: 
-					print('beep-boop',row)
-					writer.writerow(row)
+				if counter == 7:
+					rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
+					print(rowEdit)
+					writer.writerow(rowEdit)
 
 def content(filename):
+	row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
+	rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 	with open('content_'+filename, 'wb') as labels:
 		writer = csv.writer(labels)
 		with open(filename, 'rb') as mycsv:
@@ -66,7 +73,8 @@ def content(filename):
 			for counter,row in enumerate(reader):
 				if counter < 8: continue
 #				if counter > ([-2:]) : break 
-				print('boop-beep',row)
+				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
+				print('boop-beep',rowEdit)
 				writer.writerow(row)
 
 def tailey(filename):
