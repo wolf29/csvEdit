@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   reader2.sh  
+#   reader3.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
