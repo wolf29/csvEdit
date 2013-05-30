@@ -22,10 +22,12 @@
 #  
 #  
 import csv
-row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
-rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
+import re
+
+#row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
+#rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 #[0,22,2,4,6,15,16,11,18,19,20,25,26,27,28,29,30,31]
-filename=''
+#filename=''
 
 def main():
 	filename=raw_input("enter the filename==>  ")
@@ -49,9 +51,8 @@ def titleblock(filename):
 				writer.writerow(row)
 
 def labels(filename):
-	row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
-	rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 	with open('labels_'+filename, 'wb') as labels:
+	#with open('lcontent_'+filename, 'wb') as labels:
 		writer = csv.writer(labels)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
@@ -63,10 +64,8 @@ def labels(filename):
 					writer.writerow(rowEdit)
 
 def content(filename):
-	row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
-	rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-	with open('content_'+filename, 'wb') as labels:
-		writer = csv.writer(labels)
+	with open('nix_content_'+filename, 'wb') as content:
+		writer = csv.writer(content)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
 			counter = 0
@@ -74,8 +73,13 @@ def content(filename):
 				if counter < 8: continue
 #				if counter > ([-2:]) : break 
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-				print('boop-beep',rowEdit)
-				writer.writerow(row)
+				rappos=row[4]
+				print(rappos)
+				match = re.search('Linux', rappos)
+				print(match, " is a match")
+				if match != "None": 
+					print('boop-beep',rowEdit)
+					writer.writerow(rowEdit)
 
 def tailey(filename):
 	with open('endblock_'+filename, 'wb') as endblock:
