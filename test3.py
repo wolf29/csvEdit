@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   reader3.py  
+#   test3.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -22,9 +22,9 @@
 #  
 #  
 import csv
-import re
 
-#row = ['','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','','',]
+
+
 #rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 #[0,22,2,4,6,15,16,11,18,19,20,25,26,27,28,29,30,31]
 #filename=''
@@ -34,8 +34,8 @@ def main():
 	t=titleblock(filename)
 	L=labels(filename)
 	c=content(filename)
-	r=tailey(filename)
-	print(t,'\n',c,'\n',r,'\n')
+#	r=tailey(filename)
+#	print(t,'\n',c,'\n',r,'\n')
 	return 0
 
 def titleblock(filename):
@@ -69,7 +69,6 @@ def content(filename):
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
 			counter = 0
-			count2 = 0
 			for counter,row in enumerate(reader):
 				if counter < 8: continue
 #				if counter > ([-2:]) : break 
@@ -77,13 +76,9 @@ def content(filename):
 				chklist=["Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
 				wchklist=["Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
 				for i in chklist: 
-					print i
-					if i in row[4]:
-						print (rowEdit)
+					if i in row:
+						print(rowEdit)
 						writer.writerow(rowEdit)
-						count2+=1
-			print(counter, " lines read.")
-			print(count2, " lines written")
 
 def tailey(filename):
 	with open('endblock_'+filename, 'wb') as endblock:
