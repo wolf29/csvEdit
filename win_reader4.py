@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   reader3.py  
+#   win_reader4.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -22,7 +22,7 @@
 #  
 #  
 import csv
-import re
+
 
 
 def main():
@@ -30,8 +30,8 @@ def main():
 	t=titleblock(filename)
 	L=labels(filename)
 	c=content(filename)
-	r=tailey(filename)
-	print(t,'\n',c,'\n',r,'\n')
+#	r=tailey(filename)
+#	print(t,'\n',c,'\n',r,'\n')
 	return 0
 
 def titleblock(filename):
@@ -60,7 +60,7 @@ def labels(filename):
 					writer.writerow(rowEdit)
 
 def content(filename):
-	with open('nix_content_'+filename, 'wb') as content:
+	with open('win_content_'+filename, 'wb') as content:
 		writer = csv.writer(content)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
@@ -69,13 +69,13 @@ def content(filename):
 				if counter < 8: continue
 #				if counter > ([-2:]) : break 
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-				chklist=["Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*", ""]
+				chklist=["Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
+				chklist2 = ("Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*")
 				wchklist=["Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
-				for i in chklist: 
-					if i in row:
-						print (rowEdit)
-						writer.writerow(rowEdit)
-			print(counter, " lines read.")
+				if any(item in row[4] for item in wchklist):
+				#if i in row:
+					print(rowEdit)
+					writer.writerow(rowEdit)
 
 def tailey(filename):
 	with open('endblock_'+filename, 'wb') as endblock:
