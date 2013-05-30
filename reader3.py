@@ -74,10 +74,10 @@ def content(filename):
 				if counter < 8: continue
 #				if counter > ([-2:]) : break 
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-				chklist=["Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
+				chklist=["Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*", ""]
 				wchklist=["Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
 				for i in chklist: 
-					print i
+					#print i
 					if i in row[4]:
 						print (rowEdit)
 						writer.writerow(rowEdit)
@@ -92,7 +92,7 @@ def tailey(filename):
 			reader=csv.reader(mouse)
 			what=mouse.readlines()[-2:]
 			for i in what:
-				print(i)
+				#print(i)
 				writer.writerows(i)
 
 if __name__ == '__main__':
