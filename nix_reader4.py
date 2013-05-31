@@ -77,15 +77,16 @@ def content(filename):
 					print(rowEdit)
 					writer.writerow(rowEdit)
 
-def tailey(filename):
-	with open('endblock_'+filename, 'wb') as endblock:
-		writer = csv.writer(endblock)
-		with open(filename, 'rb') as mouse:
-			reader=csv.reader(mouse)
-			what=mouse.readlines()[-2:]
-			for i in what:
-				#print(i)
-				writer.writerows(i)
+# -- Obsolete Module
+#def tailey(filename):
+#	with open('endblock_'+filename, 'wb') as endblock:
+#		writer = csv.writer(endblock)
+#		with open(filename, 'rb') as mouse:
+#			reader=csv.reader(mouse)
+#			what=mouse.readlines()[-2:]
+#			for i in what:
+#				#print(i)
+#				writer.writerows(i)
 
 if __name__ == '__main__':
 	main()

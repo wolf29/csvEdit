@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test4.py  
+#   reader05.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -30,16 +30,17 @@ def main():
 	filename=raw_input("enter the filename==>  ")
 	while choice != "swallow":
 		
-		os_choice = input('Enter "1" for Linux, "2" for Windows and "3" to exit the script =>  ')
+		os_choice = raw_input('Enter "1" for Linux, "2" for Windows and "3" to exit the script =>  ')
 
 		qu = ""
-		if os_choice == 1:
+		if os_choice == "1":
 			qu = "nix"
-		elif os_choice == 2:
+		elif os_choice == "2":
 			qu = "win"
-		elif os_choice == 3:
+		elif os_choice == "3":
 			choice = "swallow"
 			break
+		else: continue
 		t=titleblock(filename)
 		L=labels(filename)
 		c=content(filename, qu)
