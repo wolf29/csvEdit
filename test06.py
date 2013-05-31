@@ -99,4 +99,3 @@ def content(filename, qu):
 
 if __name__ == '__main__':
 	main()
-
