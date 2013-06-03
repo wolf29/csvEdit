@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  untitled.py
+#  test061.py
 #  
-#  Copyright 2013 mhalton <mhalton@mint-141>
+#  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
