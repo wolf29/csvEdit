@@ -50,22 +50,20 @@ def main():
 	return 0
 
 def content(filename, qu):
-	
+	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
+	chklist2 = "Linux"
+	wchklist=["OS", "Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
+	ochklist=chklist+wchklist
+	#print(ochklist)
 	with open(qu+'_content_'+filename, 'wb') as content:
 		writer = csv.writer(content)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
 			counter = 0
-
 			for counter,row in enumerate(reader):
 				if counter < 7: continue
 #				if counter > ([-2:]) : break # This string-slicing technique doesn't work on lists made by csv module for some reason
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-				chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
-				chklist2 = "Linux"
-				wchklist=["OS", "Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
-				ochklist=chklist+wchklist
-				#print(ochklist)
 				if qu == "nix":
 					lisst = chklist
 					if any(item in row[4] for item in lisst):
@@ -78,9 +76,8 @@ def content(filename, qu):
 						writer.writerow(rowEdit)
 				elif qu == "other": 
 					lisst = ochklist
-					splist = set(lisst)
-					#if any(item not in row[4] for item in lisst):
-					if splist & row[4].split():
+					if row[4] not in lisst:
+						print("eureka")
 						print(rowEdit)
 						writer.writerow(rowEdit)
 

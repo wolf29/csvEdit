@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test06.py  
+#   reader06.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
