@@ -37,10 +37,11 @@ def main():
 	while choice != "swallow":
 		print('\nEnter   "1"  for Linux')
 		print('        "2"  for Windows')
-		print('        "3"  for all otherplatforms')
+		print('        "3"  for all other platforms')
 		print('      ******************************')
 		print('        "4"  Check SQLite3 version')
 		print('        "5"  Test Table Creation')
+		print('        "6"  Load DB from csv File')
 		print('       "99"  to exit the script')
 		
 		os_choice = raw_input('      \n     =>  ')
@@ -56,6 +57,8 @@ def main():
 			lite_ver = litever()
 		elif os_choice == "5":
 			lite_ver = test_table(filename)
+		elif os_choice == "6":
+			lite_push = load_tables(filename)
 		elif os_choice == "99":
 			choice = "swallow"
 			break
@@ -156,6 +159,40 @@ def test_table(f):
 			cur.execute("DROP TABLE IF EXISTS Cars")
 			cur.execute("CREATE TABLE Cars(Id INT, Name TEXT, Price INT)")
 			cur.executemany("INSERT INTO Cars VALUES(?, ?, ?)", cars)
+	
+	except lite.Error, e:
+		if con:
+			con.rollback()
+		print "Error %s:" % e.args[0]
+		sys.exit(1)
+
+	finally:
+		if con:
+			con.close() 
+
+def load_tables(f):
+	filename = f
+	titles=[]
+	with open(filename, 'rb') as mycsv:
+			reader = csv.reader(mycsv)
+			counter = 0
+			for counter,row in enumerate(reader):
+				if counter < 1: continue
+				if counter > 6: break
+				titles.append(row)
+				 
+#			print titles
+		
+			tests = (1, titles[0][0], titles[0][1], titles[0][2], titles[0][3], titles[0][4], titles[0][5], titles[0][6], titles[1][0], titles[1][1], titles[1][2], titles[4][0], titles[4][1], titles[4][2], titles[4][3], titles[4][4], titles[4][5], titles[4][6]),
+			
+#			print(tests)
+	try:
+		con = lite.connect('test.db')
+		with con:
+			cur = con.cursor()    
+			cur.execute("DROP TABLE IF EXISTS tests")
+			cur.execute("CREATE TABLE tests(Id INTEGER PRIMARY KEY, Corp TEXT, Address_1 TEXT, Address_2 TEXT, City TEXT, State TEXT, Country TEXT, Postal_Code TEXT, Requester TEXT, Code_1 TEXT, Role TEXT, Asset_Groups TEXT, IPs TEXT, Active_Hosts INT, Hosts_Matching_Filters INT, Trend_Analysis TEXT, Date_Range TEXT, Asset_Tags TEXT)")
+			cur.executemany("INSERT INTO tests VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", tests)
 	
 	except lite.Error, e:
 		if con:
