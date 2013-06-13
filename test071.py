@@ -31,9 +31,18 @@ con = None
 def main():
 	choice = "chew"
 	filename=raw_input("enter the filename==>  ")
+	outFileL = 'outl' 
+	outFileC = 'outc'
 	while choice != "swallow":
+		print('\nEnter   "1"  for Linux')
+		print('        "2"  for Windows')
+		print('        "3"  for all otherplatforms')
+		print('      ******************************')
+		print('        "4"  Check SQLite3 version')
+		print('        "5"  Test Table Creation')
+		print('       "99"  to exit the script')
 		
-		os_choice = raw_input('Enter   "1"  for Linux\n        "2"  for Windows\n        "3"  for all others and\n        "4"  Check SQLite3 version\n        "5"  Test Table Creation\n       "99"  to exit the script\n     =>  ')
+		os_choice = raw_input('      \n     =>  ')
 
 		qu = ""
 		if os_choice == "1":
@@ -46,16 +55,15 @@ def main():
 			lite_ver = litever()
 		elif os_choice == "5":
 			lite_ver = test_table(filename)
-			
 		elif os_choice == "99":
 			choice = "swallow"
 			break
 		else: continue
-		t=titleblock(filename)
-		L=labels(filename)
-		c=content(filename, qu)
+		filename2 = titleblock(filename)
+		(filename, outFileL) = labels(filename, outFileL)
+		(filename, qu, outFileC) = content(filename, qu, outFileC)
 
-#	print(t,'\n',c,'\n',r,'\n')
+		print(" Input File = %s,\n cycle = %s,\n Output Label File = %s,\n Output Content File = %s" % (filename, qu, outFileL, outFileC))
 	return 0
 
 def titleblock(filename):
@@ -70,9 +78,10 @@ def titleblock(filename):
 				#print(row)
 				writer.writerow(row)
 
-def labels(filename):
+def labels(filename, outFileL):
+	print(type(filename))
 	with open('labels_'+filename, 'wb') as labels:
-	#with open('lcontent_'+filename, 'wb') as labels:
+		outFileL = 'labels_'+filename
 		writer = csv.writer(labels)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
@@ -80,15 +89,16 @@ def labels(filename):
 			for counter,row in enumerate(reader):
 				if counter == 7:
 					rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
-					#print(rowEdit)
 					writer.writerow(rowEdit)
-
-def content(filename, qu):
+	return (filename, outFileL)
+	
+def content(filename, qu, outFileC):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
 	wchklist=["OS", "Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
 	ochklist=chklist+wchklist
-	#print(ochklist)
 	with open(qu+'_content_'+filename, 'wb') as content:
+		outFileC = qu+'_content_'+filename
+		print outFileC
 		writer = csv.writer(content)
 		with open(filename, 'rb') as mycsv:
 			reader = csv.reader(mycsv)
@@ -100,38 +110,31 @@ def content(filename, qu):
 				if qu == "nix":
 					lisst = chklist
 					if any(item in row[4] for item in lisst):
-						#print(rowEdit)
 						writer.writerow(rowEdit)
 				elif qu == "win":
 					lisst = wchklist
 					if any(item in row[4] for item in lisst):
-						#print(rowEdit)
 						writer.writerow(rowEdit)
 				elif qu == "other": 
 					lisst = ochklist
 					if row[4] not in lisst:
-						#print("eureka")
-						#print(rowEdit)
 						writer.writerow(rowEdit)
+	return (filename, qu, outFileC)
+
 
 def litever():
 	try:
 		con = lite.connect('test.db')
-
 		cur = con.cursor()    
 		cur.execute('SELECT SQLITE_VERSION()')
-
 		data = cur.fetchone()
-
 		print "SQLite version: %s" % data                
 
 	except lite.Error, e:
-
 		print "Error %s:" % e.args[0]
 		sys.exit(1)
 
 	finally:
-
 		if con:
 			con.close()
 
@@ -148,25 +151,19 @@ def test_table(f):
 
 	try:
 		con = lite.connect('test.db')
-
 		with con:
-
 			cur = con.cursor()    
-
 			cur.execute("DROP TABLE IF EXISTS Cars")
 			cur.execute("CREATE TABLE Cars(Id INT, Name TEXT, Price INT)")
 			cur.executemany("INSERT INTO Cars VALUES(?, ?, ?)", cars)
 	
 	except lite.Error, e:
-	
 		if con:
 			con.rollback()
-
 		print "Error %s:" % e.args[0]
 		sys.exit(1)
 
 	finally:
-
 		if con:
 			con.close() 
 
