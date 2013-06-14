@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test080.py  
+#   test081.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -191,7 +191,7 @@ def load_titles(f):
 		con = lite.connect('test.db')
 		with con:
 			cur = con.cursor()    
-#			cur.execute("DROP TABLE IF EXISTS tests")
+			cur.execute("DROP TABLE IF EXISTS tests")
 			cur.execute("CREATE TABLE tests(Id INTEGER PRIMARY KEY, Corp TEXT, Address_1 TEXT, Address_2 TEXT, City TEXT, State TEXT, Country TEXT, Postal_Code TEXT, Requester TEXT, Code_1 TEXT, Role TEXT, Asset_Groups TEXT, IPs TEXT, Active_Hosts INT, Hosts_Matching_Filters INT, Trend_Analysis TEXT, Date_Range TEXT, Asset_Tags TEXT)")
 			cur.executemany("INSERT INTO tests VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", tests)
 	
@@ -205,42 +205,36 @@ def load_titles(f):
 		if con:
 			con.close() 
 
-def load_cont(f):
-	filename = f
-
 	with open(filename, 'rb') as mycsv:
-			reader = csv.reader(mycsv)
-			counter = 0
-			for counter,row in enumerate(reader):
-				if counter < 1: continue
-				if counter > 6: break
-				
-				chine = (*, test.tests.id, row[0],row[2], row[4])
-				vuln = [*, test.machines.id, row[22], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
+		reader = csv.reader(mycsv)
+		counter = 0
+		for counter,row in enumerate(reader):
+			if counter > 7: continue
+			
+			chine = (test.tests.id, row[0],row[2], row[4])
+			vuln = [test.machines.id, row[22], row[6], row[15], row[16], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 
-				try:
-					con = lite.connect('test.db')
-					with con:
-						cur = con.cursor()    
-						cur.execute("DROP TABLE IF EXISTS machines")
-						cur.execute("CREATE TABLE machines(Id INTEGER PRIMARY KEY, Test_ID INT, IP TEXT, NetBIOS TEXT, OS TEXT)")
-						cur.executemany("INSERT INTO machines VALUES(?, ?, ?, ?, ?)", chines)
+			try:
+				con = lite.connect('test.db')
+				with con:
+					cur = con.cursor()    
+					cur.execute("DROP TABLE IF EXISTS machines")
+					cur.execute("CREATE TABLE machines(Id INTEGER PRIMARY KEY, Test_ID INT, IP TEXT, NetBIOS TEXT, OS TEXT)")
+					cur.executemany("INSERT INTO machines VALUES(?, ?, ?, ?, ?)", chines)
 
-						cur.execute("DROP TABLE IF EXISTS vulnerabilities")
-						cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, Machine_ID INT, CVSS TEXT, QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
-						cur.executemany("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
+					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
+					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, Machine_ID INT, CVSS TEXT, QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
+					cur.executemany("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 
+			except lite.Error, e:
+				if con:
+					con.rollback()
+				print "Error %s:" % e.args[0]
+				sys.exit(1)
 
-	
-	except lite.Error, e:
-		if con:
-			con.rollback()
-		print "Error %s:" % e.args[0]
-		sys.exit(1)
-
-	finally:
-		if con:
-			con.close() 
+			finally:
+				if con:
+					con.close() 
 
 if __name__ == '__main__':
 	main()
