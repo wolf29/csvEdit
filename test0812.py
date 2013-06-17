@@ -154,7 +154,7 @@ def litever(current_db):
 		if con:
 			con.close()
 
-def load_titles(f):
+def load_titles(f, d):
 	filename = f
 	titles=[]
 	with open(filename, 'rb') as mycsv:
@@ -168,7 +168,7 @@ def load_titles(f):
 			tests = (1, titles[0][0], titles[0][1], titles[0][2], titles[0][3], titles[0][4], titles[0][5], titles[0][6], titles[1][0], titles[1][1], titles[1][2], titles[4][0], titles[4][1], titles[4][2], titles[4][3], titles[4][4], titles[4][5], titles[4][6]),
 			
 	try:
-		con = lite.connect('filename.db')
+		con = lite.connect(d)
 		with con:
 			cur = con.cursor()    
 			cur.execute("DROP TABLE IF EXISTS tests")
@@ -185,9 +185,9 @@ def load_titles(f):
 		if con:
 			con.close() 
 
-def load_content(f):
+def load_content(f, d):
 	filename = f
-	con = lite.connect(filename+'.db')
+	con = lite.connect(d)
 	with open(filename, 'rb') as mycsv:
 		print(filename)
 		id = 1
@@ -210,7 +210,7 @@ def load_content(f):
 
 					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
 					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
-					cur.executemany("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
+					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 					con.commit()
 					
 			except lite.Error, e:
