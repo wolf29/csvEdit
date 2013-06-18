@@ -46,7 +46,7 @@ def main():
 	print("This is the name of the current DB for sqlAlchemy "  + current_db_2)
 	engine = create_engine('sqlite:///current_db_2', echo=True)
 	Base = declarative_base()
-	os.system("sqlite3 $current_db")
+#	os.system("sqlite3 $current_db")
 	while choice != "swallow":
 		os_choice = "100099"
 		while os_choice != "99" :
