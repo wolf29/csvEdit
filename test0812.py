@@ -155,6 +155,7 @@ def litever(current_db):
 			con.close()
 
 def load_titles(f, d):
+	print("This is da 'd,' y\'all! ", d )
 	filename = f
 	titles=[]
 	with open(filename, 'rb') as mycsv:
@@ -198,10 +199,29 @@ def load_content(f, d):
 				continue
 			print(row)
 #			chine = (test.tests.id, row[0],row[2], row[4])
-			vuln = (str(row[0]),str(row[1]), str(row[2]), str(row[3]), str(row[4]), str(row[5]), str(row[6]), str(row[7]), str(row[8]), str(row[9]), str(row[10]), str(row[11]), str(row[12]), str(row[13]), str(row[14]), str(row[15]), str(row[16]), str(row[17]))
+			vuln_0 = str(row[0])
+			vuln_1 = str(row[1])
+			vuln_2 = str(row[2])
+			vuln_3 = str(row[3])
+			vuln_4 = str(row[4])
+			vuln_5 = str(row[5])
+			vuln_6 = str(row[6])
+			vuln_7 = str(row[7])
+			vuln_8 = str(row[8])
+			vuln_9 = str(row[9])
+			vuln_A = str(row[10])
+			vuln_B = str(row[11])
+			vuln_C = str(row[12])
+			vuln_D = str(row[13])
+			vuln_E = str(row[14])
+			vuln_F = str(row[15])
+			vuln10 = str(row[16])
+			vuln11 = str(row[17])
+
+			
 #			print "Look, this is vuln =>  ", vuln
 			try:
-#				con = lite.connect('test.db')
+#				con = lite.connect(d)
 				with con:
 					cur = con.cursor()    
 #					cur.execute("DROP TABLE IF EXISTS machines")
@@ -210,7 +230,12 @@ def load_content(f, d):
 
 					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
 					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
-					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
+#					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
+					cur.execute("INSERT INTO vulnerabilities(IP) VALUES ("vuln_0");")
+
+
+
+
 					con.commit()
 					
 			except lite.Error, e:
