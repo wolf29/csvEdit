@@ -46,7 +46,6 @@ def main():
 	print("This is the name of the current DB for sqlAlchemy "  + current_db_2)
 	engine = create_engine('sqlite:///current_db_2', echo=True)
 	Base = declarative_base()
-#	os.system("sqlite3 $current_db")
 	while choice != "swallow":
 		os_choice = "100099"
 		while os_choice != "99" :
@@ -83,7 +82,7 @@ def main():
 			(filename, outFileL) = labels(filename, outFileL)
 			(filename, qu, outFileC) = content(filename, qu, outFileC)
 			print(" Input File          = %s,\n Current Platform    = %s,\n Output Title File   = %s\n Output Label File   = %s,\n Output Content File = %s" % (filename, qu, outFileT, outFileL, outFileC))
-		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r'")
+		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>")
 		if run_away == 'y':
 			filename=raw_input("enter the filename==>  ")
 		elif run_away == 'r':
@@ -179,15 +178,15 @@ def load_titles(f, d):
 				if counter > 6: break
 				titles.append(row)
 				 
-			tests = (1, titles[0][0], titles[0][1], titles[0][2], titles[0][3], titles[0][4], titles[0][5], titles[0][6], titles[1][0], titles[1][1], titles[1][2], titles[4][0], titles[4][1], titles[4][2], titles[4][3], titles[4][4], titles[4][5], titles[4][6]),
+			tests = (titles[0][0], titles[0][1], titles[0][2], titles[0][3], titles[0][4], titles[0][5], titles[0][6], titles[1][0], titles[1][1], titles[1][2], titles[4][0], titles[4][1], titles[4][2], titles[4][3], titles[4][4], titles[4][5], titles[4][6]),
 			
 	try:
 		con = lite.connect(d)
 		with con:
 			cur = con.cursor()    
-			cur.execute("DROP TABLE IF EXISTS tests")
+			cur.execute("DROP TABLE IF EXISTS test_detail")
 			cur.execute("CREATE TABLE tests(Id INTEGER PRIMARY KEY, Corp TEXT, Address_1 TEXT, Address_2 TEXT, City TEXT, State TEXT, Country TEXT, Postal_Code TEXT, Requester TEXT, Code_1 TEXT, Role TEXT, Asset_Groups TEXT, IPs TEXT, Active_Hosts INT, Hosts_Matching_Filters INT, Trend_Analysis TEXT, Date_Range TEXT, Asset_Tags TEXT)")
-			cur.executemany("INSERT INTO tests VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", tests)
+			cur.executemany("INSERT INTO test_detail(Corp, Address_1, Address_2, City, State, Country, Postal_Code, Requester, Code_1, Role, Asset_Groups, IPs, Active_Hosts, Hosts_Matching_Filters, Trend_Analysis, Date_Range, Asset_Tags) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", tests)
 	
 	except lite.Error, e:
 		if con:
@@ -212,27 +211,7 @@ def load_content(f, d):
 			if counter > 8: 
 				continue
 			print(row)
-#			chine = (test.tests.id, row[0],row[2], row[4])
-#			vuln = (id, row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
-
-			vuln_0 = str(row[0])
-			vuln_1 = str(row[1])
-			vuln_2 = str(row[2])
-			vuln_3 = str(row[3])
-			vuln_4 = str(row[4])
-			vuln_5 = str(row[5])
-			vuln_6 = str(row[6])
-			vuln_7 = str(row[7])
-			vuln_8 = str(row[8])
-			vuln_9 = str(row[9])
-			vuln_A = str(row[10])
-			vuln_B = str(row[11])
-			vuln_C = str(row[12])
-			vuln_D = str(row[13])
-			vuln_E = str(row[14])
-			vuln_F = str(row[15])
-			vuln10 = str(row[16])
-			vuln11 = str(row[17])
+			vuln = (row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
 			
 			try:
 				con = lite.connect(d)
@@ -240,10 +219,9 @@ def load_content(f, d):
 				with con:
 					cur = con.cursor()    
 
-					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
-					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
-#					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
-					cur.execute("INSERT INTO vulnerabilities(IP) VALUES ('vuln_0');")
+#					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
+					cur.execute("CREATE TABLE IF NOT EXISTS vulnerabilities(Id INTEGER PRIMARY KEY, TablesIP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
+					cur.execute("INSERT INTO vulnerabilities(IP, CVSS_Base, NetBIOS, OS, QID, First_Detected, Last_Detected, Port, CVE_ID, Vendor_Reference, Bug_traq_ID, Threat, Impacts, Solution, Exploitability, Associated_Malware, Results, PCI_Vuln) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 					con.commit()
 					
 			except lite.Error, e:
