@@ -53,8 +53,9 @@ def main():
 			print('\nEnter   "1"  for Linux')
 			print('        "2"  for Windows')
 			print('        "3"  for all other platforms')
+			print('        "4"  for all platforms')
 			print('      ******************************')
-			print('        "4"  Check SQLite3 version')
+			print('        "5"  Check SQLite3 version')
 			print('        "6"  Load Titleblock to DB from csv File')
 			print('        "7"  Load Content to DB from csv File')
 			print('       "99"  to exit the script')
@@ -68,6 +69,8 @@ def main():
 			elif os_choice == "3":
 				qu = "other"
 			elif os_choice == "4":
+				qu = "all"
+			elif os_choice == "5":
 				lite_ver = litever(current_db)
 			elif os_choice == "6":
 				lite_push = load_titles(filename, current_db)
@@ -143,6 +146,8 @@ def content(filename, qu, outFileC):
 					lisst = ochklist
 					if row[4] not in lisst:
 						writer.writerow(rowEdit)
+				elif qu == "all": 
+					writer.writerow(rowEdit)
 	return (filename, qu, outFileC)
 
 def litever(current_db):
@@ -196,20 +201,21 @@ def load_titles(f, d):
 
 def load_content(f, d):
 	filename = f
-	con = lite.connect(d)
+	
 	with open(filename, 'rb') as mycsv:
 		print(filename)
 		id = 1
 		reader = csv.reader(mycsv)
 		counter = 0
 		for counter,row in enumerate(reader):
+#			con = lite.connect(d)
 			if counter > 8: 
 				continue
 			print(row)
 #			chine = (test.tests.id, row[0],row[2], row[4])
 #			vuln = (id, row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
+
 			vuln_0 = str(row[0])
-#			print("vuln_0 is of type: ", type(str(row[0])), " and the value is ", str(row[0]))
 			vuln_1 = str(row[1])
 			vuln_2 = str(row[2])
 			vuln_3 = str(row[3])
@@ -227,26 +233,17 @@ def load_content(f, d):
 			vuln_F = str(row[15])
 			vuln10 = str(row[16])
 			vuln11 = str(row[17])
-
 			
-#			print "Look, this is vuln =>  ", vuln
 			try:
 				con = lite.connect(d)
 				
 				with con:
 					cur = con.cursor()    
-#					cur.execute("DROP TABLE IF EXISTS machines")
-#					cur.execute("CREATE TABLE machines(Id INTEGER PRIMARY KEY, Test_ID INT, IP TEXT, NetBIOS TEXT, OS TEXT)")
-#					cur.executemany("INSERT INTO machines VALUES(?, ?, ?, ?, ?)", chines)
 
 					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
 					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
 #					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
-					cur.execute("INSERT INTO vulnerabilities(IP) VALUES (vuln_0);")
-
-
-
-
+					cur.execute("INSERT INTO vulnerabilities(IP) VALUES ('vuln_0');")
 					con.commit()
 					
 			except lite.Error, e:
