@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0811.py  
+#   test0812.py  
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -199,7 +199,9 @@ def load_content(f, d):
 				continue
 			print(row)
 #			chine = (test.tests.id, row[0],row[2], row[4])
+#			vuln = (id, row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17])
 			vuln_0 = str(row[0])
+			print("vuln_0 is of type: ", type(str(row[0])), " and the value is ", str(row[0]))
 			vuln_1 = str(row[1])
 			vuln_2 = str(row[2])
 			vuln_3 = str(row[3])
@@ -221,7 +223,8 @@ def load_content(f, d):
 			
 #			print "Look, this is vuln =>  ", vuln
 			try:
-#				con = lite.connect(d)
+				con = lite.connect(d)
+				
 				with con:
 					cur = con.cursor()    
 #					cur.execute("DROP TABLE IF EXISTS machines")
@@ -231,7 +234,7 @@ def load_content(f, d):
 					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
 					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
 #					cur.execute("INSERT INTO vulnerabilities VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
-					cur.execute("INSERT INTO vulnerabilities(IP) VALUES ("vuln_0");")
+					cur.execute("INSERT INTO vulnerabilities(IP) VALUES ('$vuln_0');")
 
 
 
