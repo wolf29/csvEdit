@@ -1,0 +1,10 @@
+"Report (CSV)","datestamp",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"company","address1","address2","city","state","country","zip",,,,,,,,,,,,,,,,,,,,,,,,,,
+"A. Manager","code-1","Manager",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"Asset Groups","IPs","Active Hosts","Hosts Matching Filters","Trend Analysis","Date Range","Asset Tags",,,,,,,,,,,,,,,,,,,,,,,,,,
+"Company Assets","NONE",2,2,"Last 1 week","a date range","NONE",,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+"IP","DNS","NetBIOS","Tracking Method","OS","IP Status","QID","Title","Vuln Status","Type","Severity","Port","Protocol","FQDN","SSL","First Detected","Last Detected","Times Detected","CVE ID","Vendor Reference","Bugtraq ID","CVSS","CVSS Base","CVSS Temporal","CVSS Environment","Threat","Impact","Solution","Exploitability","Associated Malware","Results","PCI Vuln","Instance"
+"192.168.1.1","mickey.mouse.trap",,"IP","Red Hat Enterprise Linux ES 3","host scanned, found vuln",26278,"dummy title 1","Active","Vuln",3,,,,,04/17/13 04:02 AM,05/18/13 08:02 PM,7,"CVE-dummy-1","Disney ref",22212,4.1,5,4.1,"An asset group ","flaw found in cake","makes cake salty","install cake 4.0 or higher","low",,"Package installed 3.7","no",
+"192.168.1.2","minnie.mouse.trap",,"IP","Red Hat Enterprise Linux ES 3","host scanned, found vuln",87877,"dummy title 2","Active","Practice",3,80,"tcp",,,05/04/13 08:02 PM,05/18/13 08:02 PM,3,"CVE-dummy2","Disney ref 2",22222,3.9,5,3.9,"An asset group ","flaw found in ice cream","ice cream doesn't melt properly","upgrade to ice cream 8.2 or higher","high",,"Make less melty","yes",
