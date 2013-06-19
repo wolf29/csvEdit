@@ -35,6 +35,7 @@ con = None
 
 def main():
 	choice = "chew"
+	
 	filename=raw_input("enter the filename==>  ")
 	outFileT = ''
 	outFileL = '' 
@@ -49,6 +50,7 @@ def main():
 	while choice != "swallow":
 		os_choice = "100099"
 		while os_choice != "99" :
+
 			print('\nEnter   "1"  for Linux')
 			print('        "2"  for Windows')
 			print('        "3"  for all other platforms')
@@ -57,24 +59,41 @@ def main():
 			print('        "5"  Check SQLite3 version')
 			print('        "6"  Load Titleblock to DB from csv File')
 			print('        "7"  Load Content to DB from csv File')
+			print('      ******************************')
+			print('       "88"  Display Help File')
 			print('       "99"  to exit the script')
 				
 			os_choice = raw_input('      \n     =>  ')
 			qu = ""
 			if os_choice == "1":
 				qu = "lin"
+				(filename, outFileT) = titleblock(filename, outFileT)
+				(filename, outFileL) = labels(filename, outFileL)
+				(filename, qu, outFileC) = content(filename, qu, outFileC)
 			elif os_choice == "2":
 				qu = "win"
+				(filename, outFileT) = titleblock(filename, outFileT)
+				(filename, outFileL) = labels(filename, outFileL)
+				(filename, qu, outFileC) = content(filename, qu, outFileC)
 			elif os_choice == "3":
 				qu = "other"
+				(filename, outFileT) = titleblock(filename, outFileT)
+				(filename, outFileL) = labels(filename, outFileL)
+				(filename, qu, outFileC) = content(filename, qu, outFileC)
 			elif os_choice == "4":
 				qu = "all"
+				(filename, outFileT) = titleblock(filename, outFileT)
+				(filename, outFileL) = labels(filename, outFileL)
+				(filename, qu, outFileC) = content(filename, qu, outFileC)
+
 			elif os_choice == "5":
 				lite_ver = litever(current_db)
 			elif os_choice == "6":
 				lite_push = load_titles(filename, current_db)
 			elif os_choice == "7":
 				lite_push_2 = load_content(outFileC, current_db)
+			elif os_choice == "88":
+				help_me()
 			elif os_choice == "99":
 				break
 			else: continue
@@ -167,7 +186,8 @@ def litever(current_db):
 			con.close()
 
 def load_titles(f, d):
-#	print("This is da 'd,' y\'all! ", d )
+	print("This is da 'd,' y\'all! ", d )
+	print("This is da 'f,' y\'all! ", f )
 	filename = f
 	titles=[]
 	with open(filename, 'rb') as mycsv:
@@ -200,7 +220,8 @@ def load_titles(f, d):
 
 def load_content(f, d):
 	filename = f
-	
+	print("This is da 'd,' y\'all! ", d )
+	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
 #		print(filename)
 		id = 1
@@ -233,6 +254,27 @@ def load_content(f, d):
 			finally:
 				if con:
 					con.close() 
+
+def help_me():
+	print('''*** Help File ***\n
+	Choices 1 through 4 produce csv files broken down 
+	into the "Title Block" with the details of the test, 
+	requester, date of test, business unit and so on; 
+	and the content of the individual vulnerabilities, 
+	differentiated by OS - specifically Linux, Windows 
+	and Other.  There is also an "ALL OS" choice, which 
+	is likely to be the one you want to use to load the 
+	database, where you might want counts and specifics 
+	by various operating system platforms.
+	\n
+	The next three choices, 5 through 7 are related to 
+	the database.  If you want to run the system by 
+	hand, you can type the platform number and then "6" 
+	to load the title block to a database table, then your
+	choice of platform and "7" to load the content.  
+	\n
+	The TODO list has combination choices that put out 
+	the csv file(s) and load the database at once.''')
 
 if __name__ == '__main__':
 	main()
