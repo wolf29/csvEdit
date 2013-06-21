@@ -25,10 +25,7 @@ import csv
 import sqlite3 as lite
 import sys
 import os
-from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Date, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
+
 
 con = None
 
@@ -44,9 +41,7 @@ def main():
 	current_db_2 = filename[:-4]+'_alc.db'
 #	print("The filename minus the extention is ", filename[:-4])
 #	print("This is the name of the current DB ", current_db)
-#	print("This is the name of the current DB for sqlAlchemy "  + current_db_2)
-	engine = create_engine('sqlite:///current_db_2', echo=True)
-	Base = declarative_base()
+
 	while choice != "swallow":
 		os_choice = "100099"
 		while os_choice != "99" :
