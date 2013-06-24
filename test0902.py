@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0900.py
+#   test0902.py
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -220,8 +220,9 @@ def load_content(f, d):
 	print("This is da 'd,' y\'all! ", d )
 	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
+		con = lite.connect(d)
 #		print(filename)
-		id = 1
+
 		reader = csv.reader(mycsv)
 		counter = 0
 		for counter,row in enumerate(reader):
@@ -236,8 +237,8 @@ def load_content(f, d):
 				with con:
 					cur = con.cursor()    
 
-					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
-					cur.execute("CREATE TABLE vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Times_Detected INT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
+#					cur.execute("DROP TABLE IF EXISTS vulnerabilities")
+					cur.execute("CREATE TABLE IF NOT EXISTS vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Times_Detected INT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
 					cur.execute("INSERT INTO vulnerabilities(IP, CVSS_Base, NetBIOS, OS, QID, First_Detected, Last_Detected, Times_Detected, Port, CVE_ID, Vendor_Reference, Bug_traq_ID, Threat, Impacts, Solution, Exploitability, Associated_Malware, Results, PCI_Vuln) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 					con.commit()
 					
