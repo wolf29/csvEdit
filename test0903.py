@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0902.py
+#   test0903.py
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -43,14 +43,14 @@ def main():
 		os_choice = "100099"
 		while os_choice != "99" :
 
-			print('\nEnter   "1"  for all Linux in a headless csv file')
-			print('        "2"  for all Windows in a headless csv file')
-			print('        "3"  for all other platforms in a headless csv file')
-			print('        "4"  for all platforms in a headless csv file')
+			print('\nEnter   "1"  for Linux')
+			print('        "2"  for Windows')
+			print('        "3"  for all other platforms')
+			print('        "4"  for all platforms')
 			print('      ******************************')
 			print('        "5"  Check SQLite3 version')
-			print('        "6"  Load Titleblock to DB from csv file')
-			print('        "7"  Load All Content to DB from csv file')
+			#print('        "6"  Load Titleblock to DB from csv File')
+			print('        "7"  Load Content to DB from csv File')
 			print('      ******************************')
 			print('       "88"  Display Help File')
 			print('       "99"  to exit the script')
@@ -87,17 +87,15 @@ def main():
 				(filename, outFileT) = titleblock(filename, outFileT)
 				(filename, outFileL) = labels(filename, outFileL)
 				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				load_titles(filename, current_db)
 				load_content(outFileC, current_db)
 			elif os_choice == "88":
 				help_me()
 			elif os_choice == "99":
 				break
 			else: continue
-#			(filename, outFileT) = titleblock(filename, outFileT)
-#			(filename, outFileL) = labels(filename, outFileL)
-#			(filename, qu, outFileC) = content(filename, qu, outFileC)
 			print(" Input File          = %s,\n Current Platform    = %s,\n Output Title File   = %s\n Output Label File   = %s,\n Output Content File = %s" % (filename, qu, outFileT, outFileL, outFileC))
-		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>")
+		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>  ")
 		if run_away == 'y':
 			filename=raw_input("enter the filename==>  ")
 		elif run_away == 'r':
@@ -139,6 +137,7 @@ def content(filename, qu, outFileC):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
 	wchklist=["OS", "Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
 	ochklist=chklist+wchklist
+	written = 0
 	with open(qu+'_content_'+filename, 'wb') as content:
 		outFileC = qu+'_content_'+filename
 		writer = csv.writer(content)
@@ -147,22 +146,32 @@ def content(filename, qu, outFileC):
 			counter = 0
 			for counter,row in enumerate(reader):
 				if counter < 8: continue
-
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[17], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 				if qu == "lin":
 					lisst = chklist
 					if any(item in row[4] for item in lisst):
 						writer.writerow(rowEdit)
+						written = written +1
+						print(written)
 				elif qu == "win":
 					lisst = wchklist
 					if any(item in row[4] for item in lisst):
 						writer.writerow(rowEdit)
+						written = written + 1
+						print(written)
 				elif qu == "other": 
 					lisst = ochklist
 					if row[4] not in lisst:
 						writer.writerow(rowEdit)
+						written = written +1
+						print(written)
 				elif qu == "all": 
-					writer.writerow(rowEdit)
+					if  len(str(row[0])) <= '16':
+						writer.writerow(rowEdit)
+						written = written +1
+#						print(row[0], 'is the value of the IP field')
+#				print(len(str(row[0])), ' is the length of the strings in the IP field')
+#			print(written, ' is the number of lines written.')
 	print(counter, " is the number of rows in the csv.")
 	return (filename, qu, outFileC)
 
@@ -184,8 +193,8 @@ def litever(current_db):
 			con.close()
 
 def load_titles(f, d):
-	print("This is da 'd'-atabase name, y\'all! ", d ) 
-	print("This is da origin 'f'-ilename, y\'all! ", f )
+#	print("This is da 'd'-atabase name, y\'all! ", d ) 
+#	print("This is da origin 'f'-ilename, y\'all! ", f )
 	filename = f
 	current_db = d
 	titles=[]
@@ -221,18 +230,16 @@ def load_titles(f, d):
 def load_content(f, d):
 	filename = f
 	current_db = d
-	print("This is da 'd,' y\'all! ", d )
-	print("This is da 'f,' y\'all! ", f )
+#	print("This is da 'd,' y\'all! ", d )
+#	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
 		con = lite.connect(d)
-#		print(filename)
 
 		reader = csv.reader(mycsv)
 		counter = 0
+		counter2 = 0
 		for counter,row in enumerate(reader):
-#			if counter > 9: 
-#				continue
-			print(row)
+#			print(row)
 			vuln = (row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18])
 			
 			try:
@@ -245,6 +252,7 @@ def load_content(f, d):
 					cur.execute("CREATE TABLE IF NOT EXISTS vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Times_Detected INT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
 					cur.execute("INSERT INTO vulnerabilities(IP, CVSS_Base, NetBIOS, OS, QID, First_Detected, Last_Detected, Times_Detected, Port, CVE_ID, Vendor_Reference, Bug_traq_ID, Threat, Impacts, Solution, Exploitability, Associated_Malware, Results, PCI_Vuln) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 					con.commit()
+					counter2 = counter2 + 1
 					
 			except lite.Error, e:
 				if con:
@@ -255,7 +263,6 @@ def load_content(f, d):
 			finally:
 				if con:
 					con.close() 
-	print(counter)
 	outFileC = filename
 	return outFileC, current_db
 
