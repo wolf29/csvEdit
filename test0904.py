@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0903.py
+#   test0904.py
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -234,7 +234,9 @@ def load_content(f, d):
 #	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
 		con = lite.connect(d)
-
+		cur = con.cursor() 
+		cur.execute("PRAGMA foreign_keys = ON")
+		cur = con.commit()
 		reader = csv.reader(mycsv)
 		counter = 0
 		counter2 = 0
