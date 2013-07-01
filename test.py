@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0902.py
+#   reader.py (test version 0.8.0.6)
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -28,9 +28,31 @@ import sys
 import os
 
 con = None
-
+'''                *** Help File ***\n
+	Choices 1 through 4 produce csv files broken down into the "Title 
+	Block" with the details of the test, requester, date of test, 
+	business unit and so on; and the content of the individual 
+	vulnerabilities, differentiated by OS - specifically Linux, Windows 
+	and Other.  There is also an "ALL OS" choice, which is likely to be 
+	the one you want to use to load the database, where you might want 
+	counts and specifics by various operating system platforms.\n
+	The next three choices, 5 through 7 are related to the database.  
+	If you want to run the system by hand, you can type the platform 
+	number and then "6" to load the title block to a database table, 
+	then your choice of platform and "7" to run all modules.  Choosing 
+	"8" runs the modules in #7 inside a callable module called "process"
+	as in "import from csv-edit process".  
+	\n
+	The TODO list has a GUI interface for setting the filename and 
+	outFile stub(s).
+	'''
+	
 
 def main():
+	#--start constants--
+	__version__ = "0.8.0.6"
+	#--end constants--
+	
 	choice = "chew"
 	
 	filename=raw_input("enter the filename==>  ")
@@ -51,6 +73,7 @@ def main():
 			print('        "5"  Check SQLite3 version')
 			print('        "6"  Load Titleblock to DB from csv File')
 			print('        "7"  Load Content to DB from csv File')
+			print('        "8"  Fully automates function for #7')
 			print('      ******************************')
 			print('       "88"  Display Help File')
 			print('       "99"  to exit the script')
@@ -83,17 +106,22 @@ def main():
 				print(filename, current_db)
 				load_titles(filename, current_db)
 			elif os_choice == "7":
+				qu = "all"
+				(filename, outFileT) = titleblock(filename, outFileT)
+				(filename, outFileL) = labels(filename, outFileL)
+				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				load_titles(filename, current_db)
 				load_content(outFileC, current_db)
+			elif os_choice == "8":
+				process(filename, qu, outFileT, outFileL, outFileC, current_db)
 			elif os_choice == "88":
 				help_me()
 			elif os_choice == "99":
 				break
 			else: continue
-#			(filename, outFileT) = titleblock(filename, outFileT)
-#			(filename, outFileL) = labels(filename, outFileL)
-#			(filename, qu, outFileC) = content(filename, qu, outFileC)
 			print(" Input File          = %s,\n Current Platform    = %s,\n Output Title File   = %s\n Output Label File   = %s,\n Output Content File = %s" % (filename, qu, outFileT, outFileL, outFileC))
-		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>")
+
+		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>  ")
 		if run_away == 'y':
 			filename=raw_input("enter the filename==>  ")
 		elif run_away == 'r':
@@ -135,6 +163,7 @@ def content(filename, qu, outFileC):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
 	wchklist=["OS", "Windows 2003 Service Pack 2", "Windows 2008 R2 Enterprise Service Pack 1", "Windows Server 2003 Service Pack 2", "Windows Server 2008 R2 Enterprise 64 bit Edition Service Pack 1","Windows"]
 	ochklist=chklist+wchklist
+	written = 0
 	with open(qu+'_content_'+filename, 'wb') as content:
 		outFileC = qu+'_content_'+filename
 		writer = csv.writer(content)
@@ -143,23 +172,33 @@ def content(filename, qu, outFileC):
 			counter = 0
 			for counter,row in enumerate(reader):
 				if counter < 8: continue
-
 				rowEdit = [row[0],row[22],row[2], row[4], row[6], row[15], row[16], row[17], row[11], row[18], row[19], row[20], row[25], row[26], row[27], row[28], row[29], row[30], row[31]]
 				if qu == "lin":
 					lisst = chklist
 					if any(item in row[4] for item in lisst):
 						writer.writerow(rowEdit)
+						written = written +1
+						print(written)
 				elif qu == "win":
 					lisst = wchklist
 					if any(item in row[4] for item in lisst):
 						writer.writerow(rowEdit)
+						written = written + 1
+						print(written)
 				elif qu == "other": 
 					lisst = ochklist
 					if row[4] not in lisst:
 						writer.writerow(rowEdit)
+						written = written +1
+						print(written)
 				elif qu == "all": 
-					writer.writerow(rowEdit)
-	print(counter, " is the number of rows in the csv.")
+					if  len(str(row[0])) <= '16':
+						writer.writerow(rowEdit)
+						written = written +1
+#						print(row[0], 'is the value of the IP field')
+#				print(len(str(row[0])), ' is the length of the strings in the IP field')
+#			print(written, ' is the number of lines written.')
+#	print(counter, " is the number of rows in the csv.")
 	return (filename, qu, outFileC)
 
 def litever(current_db):
@@ -180,8 +219,8 @@ def litever(current_db):
 			con.close()
 
 def load_titles(f, d):
-	print("This is da 'd'-atabase name, y\'all! ", d ) 
-	print("This is da origin 'f'-ilename, y\'all! ", f )
+#	print("This is da 'd'-atabase name, y\'all! ", d ) 
+#	print("This is da origin 'f'-ilename, y\'all! ", f )
 	filename = f
 	current_db = d
 	titles=[]
@@ -217,18 +256,18 @@ def load_titles(f, d):
 def load_content(f, d):
 	filename = f
 	current_db = d
-	print("This is da 'd,' y\'all! ", d )
-	print("This is da 'f,' y\'all! ", f )
+#	print("This is da 'd,' y\'all! ", d )
+#	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
 		con = lite.connect(d)
-#		print(filename)
-
+		cur = con.cursor() 
+		cur.execute("PRAGMA foreign_keys = ON")
+		cur = con.commit()
 		reader = csv.reader(mycsv)
 		counter = 0
+		counter2 = 0
 		for counter,row in enumerate(reader):
-#			if counter > 9: 
-#				continue
-			print(row)
+#			print(row)
 			vuln = (row[0],row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18])
 			
 			try:
@@ -241,6 +280,7 @@ def load_content(f, d):
 					cur.execute("CREATE TABLE IF NOT EXISTS vulnerabilities(Id INTEGER PRIMARY KEY, IP TEXT, CVSS_Base TEXT, NetBIOS TEXT, OS TEXT,  QID TEXT, First_Detected TEXT, Last_Detected TEXT, Times_Detected INT, Port TEXT, CVE_ID TEXT, Vendor_Reference TEXT, Bug_traq_ID TEXT, Threat TEXT, Impacts TEXT, Solution TEXT, Exploitability TEXT, Associated_Malware TEXT, Results TEXT, PCI_Vuln TEXT)")
 					cur.execute("INSERT INTO vulnerabilities(IP, CVSS_Base, NetBIOS, OS, QID, First_Detected, Last_Detected, Times_Detected, Port, CVE_ID, Vendor_Reference, Bug_traq_ID, Threat, Impacts, Solution, Exploitability, Associated_Malware, Results, PCI_Vuln) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", vuln)
 					con.commit()
+					counter2 = counter2 + 1
 					
 			except lite.Error, e:
 				if con:
@@ -251,30 +291,36 @@ def load_content(f, d):
 			finally:
 				if con:
 					con.close() 
-	print(counter)
 	outFileC = filename
 	return outFileC, current_db
 
+def process(filename, qu, outFileT, outFileL, outFileC, current_db):
+	qu = "all"
+	(filename, outFileT) = titleblock(filename, outFileT)
+	(filename, outFileL) = labels(filename, outFileL)
+	(filename, qu, outFileC) = content(filename, qu, outFileC)
+	load_titles(filename, current_db)
+	load_content(outFileC, current_db)
+	return(filename, qu, outFileT, outFileL, outFileC, current_db)
+
 def help_me():
-	print('''*** Help File ***\n
-	Choices 1 through 4 produce csv files broken down 
-	into the "Title Block" with the details of the test, 
-	requester, date of test, business unit and so on; 
-	and the content of the individual vulnerabilities, 
-	differentiated by OS - specifically Linux, Windows 
-	and Other.  There is also an "ALL OS" choice, which 
-	is likely to be the one you want to use to load the 
-	database, where you might want counts and specifics 
-	by various operating system platforms.
+	print('''                *** Help File ***\n
+	Choices 1 through 4 produce csv files broken down into the "Title 
+	Block" with the details of the test, requester, date of test, 
+	business unit and so on; and the content of the individual 
+	vulnerabilities, differentiated by OS - specifically Linux, Windows 
+	and Other.  There is also an "ALL OS" choice, which is likely to be 
+	the one you want to use to load the database, where you might want 
+	counts and specifics by various operating system platforms.\n
+	The next three choices, 5 through 7 are related to the database.  
+	If you want to run the system by hand, you can type the platform 
+	number and then "6" to load the title block to a database table, 
+	then your choice of platform and "7" to run all modules.  Choosing 
+	"8" runs the modules in #7 inside a callable module called "process"
+	as in "import from csv-edit process".  
 	\n
-	The next three choices, 5 through 7 are related to 
-	the database.  If you want to run the system by 
-	hand, you can type the platform number and then "6" 
-	to load the title block to a database table, then your
-	choice of platform and "7" to load the content.  
-	\n
-	The TODO list has combination choices that put out 
-	the csv file(s) and load the database at once.''')
+	The TODO list has a GUI interface for setting the filename and 
+	outFile stub(s).\n''')
 
 if __name__ == '__main__':
 	main()

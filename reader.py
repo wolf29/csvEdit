@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   test0904.py
+#   reader.py (version 0.8.0.6)
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -28,9 +28,31 @@ import sys
 import os
 
 con = None
-
+'''                *** Help File ***\n
+	Choices 1 through 4 produce csv files broken down into the "Title 
+	Block" with the details of the test, requester, date of test, 
+	business unit and so on; and the content of the individual 
+	vulnerabilities, differentiated by OS - specifically Linux, Windows 
+	and Other.  There is also an "ALL OS" choice, which is likely to be 
+	the one you want to use to load the database, where you might want 
+	counts and specifics by various operating system platforms.\n
+	The next three choices, 5 through 7 are related to the database.  
+	If you want to run the system by hand, you can type the platform 
+	number and then "6" to load the title block to a database table, 
+	then your choice of platform and "7" to run all modules.  Choosing 
+	"8" runs the modules in #7 inside a callable module called "process"
+	as in "import from csv-edit process".  
+	\n
+	The TODO list has a GUI interface for setting the filename and 
+	outFile stub(s).
+	'''
+	
 
 def main():
+	#--start constants--
+	__version__ = "0.8.0.6"
+	#--end constants--
+	
 	choice = "chew"
 	
 	filename=raw_input("enter the filename==>  ")
@@ -49,7 +71,7 @@ def main():
 			print('        "4"  for all platforms')
 			print('      ******************************')
 			print('        "5"  Check SQLite3 version')
-			#print('        "6"  Load Titleblock to DB from csv File')
+			print('        "6"  Load Titleblock to DB from csv File')
 			print('        "7"  Load Content to DB from csv File')
 			print('        "8"  Fully automates function for #7')
 			print('      ******************************')
@@ -98,6 +120,7 @@ def main():
 				break
 			else: continue
 			print(" Input File          = %s,\n Current Platform    = %s,\n Output Title File   = %s\n Output Label File   = %s,\n Output Content File = %s" % (filename, qu, outFileT, outFileL, outFileC))
+
 		run_away = raw_input("if you would like to run with a different source-file, type 'y'\nIf you would like to run away, type 'r' :=>  ")
 		if run_away == 'y':
 			filename=raw_input("enter the filename==>  ")
@@ -175,7 +198,7 @@ def content(filename, qu, outFileC):
 #						print(row[0], 'is the value of the IP field')
 #				print(len(str(row[0])), ' is the length of the strings in the IP field')
 #			print(written, ' is the number of lines written.')
-	print(counter, " is the number of rows in the csv.")
+#	print(counter, " is the number of rows in the csv.")
 	return (filename, qu, outFileC)
 
 def litever(current_db):
@@ -288,8 +311,7 @@ def help_me():
 	vulnerabilities, differentiated by OS - specifically Linux, Windows 
 	and Other.  There is also an "ALL OS" choice, which is likely to be 
 	the one you want to use to load the database, where you might want 
-	counts and specifics by various operating system platforms.
-	\n
+	counts and specifics by various operating system platforms.\n
 	The next three choices, 5 through 7 are related to the database.  
 	If you want to run the system by hand, you can type the platform 
 	number and then "6" to load the title block to a database table, 
