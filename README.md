@@ -1,4 +1,4 @@
-csv-edit
+csvEdit
 ========
 
 For editing csv files down to size, removing excess bloatage and unneeded columns
