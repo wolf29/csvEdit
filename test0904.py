@@ -51,6 +51,7 @@ def main():
 			print('        "5"  Check SQLite3 version')
 			#print('        "6"  Load Titleblock to DB from csv File')
 			print('        "7"  Load Content to DB from csv File')
+			print('        "8"  Fully automates function for #7')
 			print('      ******************************')
 			print('       "88"  Display Help File')
 			print('       "99"  to exit the script')
@@ -89,6 +90,8 @@ def main():
 				(filename, qu, outFileC) = content(filename, qu, outFileC)
 				load_titles(filename, current_db)
 				load_content(outFileC, current_db)
+			elif os_choice == "8":
+				process(filename, qu, outFileT, outFileL, outFileC, current_db)
 			elif os_choice == "88":
 				help_me()
 			elif os_choice == "99":
@@ -268,26 +271,34 @@ def load_content(f, d):
 	outFileC = filename
 	return outFileC, current_db
 
+def process(filename, qu, outFileT, outFileL, outFileC, current_db):
+	qu = "all"
+	(filename, outFileT) = titleblock(filename, outFileT)
+	(filename, outFileL) = labels(filename, outFileL)
+	(filename, qu, outFileC) = content(filename, qu, outFileC)
+	load_titles(filename, current_db)
+	load_content(outFileC, current_db)
+	return(filename, qu, outFileT, outFileL, outFileC, current_db)
+
 def help_me():
-	print('''*** Help File ***\n
-	Choices 1 through 4 produce csv files broken down 
-	into the "Title Block" with the details of the test, 
-	requester, date of test, business unit and so on; 
-	and the content of the individual vulnerabilities, 
-	differentiated by OS - specifically Linux, Windows 
-	and Other.  There is also an "ALL OS" choice, which 
-	is likely to be the one you want to use to load the 
-	database, where you might want counts and specifics 
-	by various operating system platforms.
+	print('''                *** Help File ***\n
+	Choices 1 through 4 produce csv files broken down into the "Title 
+	Block" with the details of the test, requester, date of test, 
+	business unit and so on; and the content of the individual 
+	vulnerabilities, differentiated by OS - specifically Linux, Windows 
+	and Other.  There is also an "ALL OS" choice, which is likely to be 
+	the one you want to use to load the database, where you might want 
+	counts and specifics by various operating system platforms.
 	\n
-	The next three choices, 5 through 7 are related to 
-	the database.  If you want to run the system by 
-	hand, you can type the platform number and then "6" 
-	to load the title block to a database table, then your
-	choice of platform and "7" to load the content.  
+	The next three choices, 5 through 7 are related to the database.  
+	If you want to run the system by hand, you can type the platform 
+	number and then "6" to load the title block to a database table, 
+	then your choice of platform and "7" to run all modules.  Choosing 
+	"8" runs the modules in #7 inside a callable module called "process"
+	as in "import from csv-edit process".  
 	\n
-	The TODO list has combination choices that put out 
-	the csv file(s) and load the database at once.''')
+	The TODO list has a GUI interface for setting the filename and 
+	outFile stub(s).\n''')
 
 if __name__ == '__main__':
 	main()
