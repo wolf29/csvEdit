@@ -21,7 +21,7 @@
 #  MA 02110-1301, USA.
 #  
 #  
-
+import time
 from reader import process
 
 def main():
@@ -75,8 +75,8 @@ def main():
 			print("Either 'y' or 'r' please")
 			
 	return 0
-	
-dev help_me():
+
+def help_me():
 	print('''
 	How to use: either put the csv-edit folder in your dist-packages
 	folder or invoke caller on the command line from inside the 
