@@ -195,10 +195,6 @@ def content(filename, qu, outFileC):
 					if  len(str(row[0])) <= 16:
 						writer.writerow(rowEdit)
 						written = written +1
-#						print(row[0], 'is the value of the IP field')
-#				print(len(str(row[0])), ' is the length of the strings in the IP field')
-#			print(written, ' is the number of lines written.')
-#	print(counter, " is the number of rows in the csv.")
 	return (filename, qu, outFileC)
 
 def litever(current_db):
@@ -219,8 +215,6 @@ def litever(current_db):
 			con.close()
 
 def load_titles(f, d):
-#	print("This is da 'd'-atabase name, y\'all! ", d ) 
-#	print("This is da origin 'f'-ilename, y\'all! ", f )
 	filename = f
 	current_db = d
 	titles=[]
@@ -256,8 +250,6 @@ def load_titles(f, d):
 def load_content(f, d):
 	filename = f
 	current_db = d
-#	print("This is da 'd,' y\'all! ", d )
-#	print("This is da 'f,' y\'all! ", f )
 	with open(filename, 'rb') as mycsv:
 		con = lite.connect(d)
 		cur = con.cursor() 
