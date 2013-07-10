@@ -1,0 +1,5 @@
+sqlite> select count(distinct QID) from vulnerabilities order by qid;
+179
+sqlite> select count(distinct IP) from vulnerabilities;
+336
+sqlite> SELECT  * FROM vulnerabilities order by qid limit 10;
