@@ -3,3 +3,12 @@ sqlite> select count(distinct QID) from vulnerabilities order by qid;
 sqlite> select count(distinct IP) from vulnerabilities;
 336
 sqlite> SELECT  * FROM vulnerabilities order by qid limit 10;
+
+sqlite> select count(*) from events;
+0
+sqlite> select count(*) from qid_def;
+4903
+sqlite> select count(distinct QID) from qid_def;
+179
+sqlite> select count(distinct IP) from mhosts;
+336

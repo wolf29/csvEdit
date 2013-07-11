@@ -133,7 +133,7 @@ def main():
 				load_mhost(outFileM, outdir,  current_db)
 				load_events(outFileE, outdir,  current_db)
 			elif os_choice == "9":
-				process(filename, outdir,  qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db)
+				process(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db)
 			elif os_choice == "88":
 				help_me()
 			elif os_choice == "99":
@@ -146,7 +146,7 @@ def main():
 			filename=raw_input("enter the filename==>  ")
 		elif run_away == 'r':
 			print("Thanks for using the csv-edit scripts.")
-			time.sleep(4)
+			time.sleep(2)
 			choice = "swallow"
 		else:
 			print("Either 'y' or 'r' please")
@@ -246,6 +246,7 @@ def event(filename,  outdir, qu, outFileE):
 			for counter,row in enumerate(reader):
 				if counter < 8: continue
 				rowEdit = [row[0], row[6], row[15], row[16], row[17], row[11], row[30]]
+#				print(rowEdit)
 				if qu == "all": 
 					if  len(str(row[0])) <= 16:
 						# keeps the last 2 irrelevant rows from printing to the output
@@ -290,7 +291,7 @@ def content(filename, outdir,  qu, outFileC):
 
 def litever(outdir, current_db):
 	try:
-		con = lite.connect('outdir/current_db')
+		con = lite.connect(outdir+'/'+current_db)
 		print(current_db)
 		cur = con.cursor()    
 		cur.execute('SELECT SQLITE_VERSION()')
@@ -336,7 +337,7 @@ def load_titles(f, outdir,  d):
 	finally:
 		if con:
 			con.close() 
-	return filename,  outdir, current_db
+#	return filename,  outdir, current_db
 
 def load_content(f, outdir, d):
 	filename = f
@@ -376,7 +377,7 @@ def load_content(f, outdir, d):
 					con.close() 
 
 	outFileC = filename
-	return outFileC, outdir, current_db
+#	return outFileC, outdir, current_db
 	
 def load_qid(f, outdir,  d):
 	filename = f
@@ -415,7 +416,7 @@ def load_qid(f, outdir,  d):
 					con.close() 
 
 	outFileQ = filename
-	return outFileQ, current_db
+#	return outFileQ, outdir, current_db
 
 def load_mhost(f, outdir,  d):
 	filename = f
@@ -451,7 +452,7 @@ def load_mhost(f, outdir,  d):
 				if con:
 					con.close() 
 	outFileM = filename
-	return outFileM, outdir, current_db
+#	return outFileM, outdir, current_db
 
 def load_events(f, outdir, d):
 	filename = f
@@ -464,8 +465,8 @@ def load_events(f, outdir, d):
 		counter = 0
 		counter2 = 0
 		for counter,row in enumerate(reader):
-#			print(row)
-			events2 = (row[0],row[1], row[2], row[3], row[4], row[5], row[6])
+			print("LOAD_EVENTS \nIP, QID, First_Detected, Last_Detected, Times_Detected, Port, Results\n",row)
+			events2 = (row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 			
 			try:
 				con = lite.connect(outdir+'/'+d)
@@ -478,7 +479,7 @@ def load_events(f, outdir, d):
 					cur.execute("INSERT INTO vulnerabilities(IP, QID, First_Detected, Last_Detected, Times_Detected, Port, Results) VALUES (?, ?, ?, ?, ?, ?, ?)", events2)
 					con.commit()
 					counter2 = counter2 + 1
-					
+
 			except lite.Error, e:
 				if con:
 					con.rollback()
@@ -488,8 +489,9 @@ def load_events(f, outdir, d):
 			finally:
 				if con:
 					con.close() 
-	outFileQ = filename
-	return outFileQ, outdir, current_db
+
+	outFileE = filename
+#	return outFileE, outdir, current_db
 
 def process(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db):
 	qu = "all"
