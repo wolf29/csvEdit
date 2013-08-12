@@ -22,7 +22,9 @@ reader.py is the set of modules that processes the raw Qualys csv file.
     you need to put the file you are processing in the csv-edit folder.
 
 csvEdit uses web2py as a web front-end.  
+	
 	Web2py License
+	
 	Web2py is Licensed under the LGPL license version 3 
 	(http://www.gnu.org/licenses/lgpl.html)
 
