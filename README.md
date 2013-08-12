@@ -4,6 +4,7 @@ csvEdit
 For editing csv files down to size, removing excess bloatage and unneeded columns
 
 csvEdit License
+
 	Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
   
 	This program is free software; you can redistribute it and/or modify
