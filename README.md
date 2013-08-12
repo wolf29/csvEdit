@@ -3,6 +3,14 @@ csvEdit
 
 For editing csv files down to size, removing excess bloatage and unneeded columns
 
+csvEdit License
+	Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
+  
+	This program is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	(at your option) any later version.
+
 caller.py is the front-end that calls the reader.
     How to use: either put the csv-edit folder in your dist-packages folder 
     or invoke caller on the command line from inside the csv-edit folder.  
@@ -11,6 +19,13 @@ caller.py is the front-end that calls the reader.
 reader.py is the set of modules that processes the raw Qualys csv file.  
     If you have not added the csv-edit folder to the dist-packages folder, 
     you need to put the file you are processing in the csv-edit folder.
+
+csvEdit uses web2py as a web front-end.  
+	Web2py License
+	Web2py is Licensed under the LGPL license version 3 
+	(http://www.gnu.org/licenses/lgpl.html)
+
+	Copyrighted (c) by Massimo Di Pierro (2007-2013)
     
     How to use: 
     '''                *** Help File ***\n
