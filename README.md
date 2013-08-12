@@ -49,5 +49,7 @@ How to use:
 	should be easier to zip and move
 	
 The TODO list is:
+
 	to develop a GUI (web) interface with web2py
+	
 	to create list of sql commands for analyst's report
