@@ -27,7 +27,7 @@ csvEdit uses web2py as a web front-end.
 
 	Copyrighted (c) by Massimo Di Pierro (2007-2013)
     
-    How to use: 
+How to use: 
     '''                *** Help File ***\n
 	Choices 1 through 5 produce csv files broken down into the "Title 
 	Block" with the details of the test, requester, date of test, 
@@ -46,5 +46,5 @@ csvEdit uses web2py as a web front-end.
 	should be easier to zip and move
 	\n
 	The TODO list is:
-		to create a GUI interface
+		to develop a GUI (web) interface with web2py
 		to create list of sql commands for analyst's report
