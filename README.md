@@ -47,7 +47,7 @@ How to use:
 	as in "import from csv-edit process".
 	All the files are put into an eponymously-titled directory.  This 
 	should be easier to zip and move
-	\n
-	The TODO list is:
-		to develop a GUI (web) interface with web2py
-		to create list of sql commands for analyst's report
+	
+The TODO list is:
+	to develop a GUI (web) interface with web2py
+	to create list of sql commands for analyst's report
