@@ -84,5 +84,6 @@ use_janrain(auth, filename='private/janrain.key')
 
 #########################################################################
 db.define_table('post',
-    Field('content1', 'text1'),
+    Field('content1', 'text'),
+    Field('cat_lover', 'string')
     Field('user_id', db.auth_user))

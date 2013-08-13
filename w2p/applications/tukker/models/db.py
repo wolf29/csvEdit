@@ -81,9 +81,3 @@ use_janrain(auth, filename='private/janrain.key')
 
 ## after defining tables, uncomment below to enable auditing
 # auth.enable_record_versioning(db)
-
-#########################################################################
-db.define_table('post',
-    Field('content1', 'text'),
-    Field('cat_lover', 'string'),
-    Field('user_id', db.auth_user))
