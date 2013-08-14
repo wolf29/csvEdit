@@ -8,7 +8,7 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 ## - call exposes all registered services (none by default)
 #########################################################################
-
+import random
 
 def index():
     """
@@ -18,8 +18,10 @@ def index():
     if you need a simple wiki simple replace the two lines below with:
     return auth.wiki()
     """
-    response.flash = T("Welcome to web2py!")
-    return dict(message=T('Hello World'))
+    messy_annie=['Hello World', 'Oh Hell, Whirled!', 'Your fly is open.', 'Cats won\'t eat that code!', 'Silly Rabbit!']
+    messy_annie_ka=['Welcome to Tuckker2.me', 'Tukker2.me is the fastest', 'Tukker2.me is Pretty']
+    response.flash = T(messy_annie_ka[random.randint(0,2)])
+    return dict(message=T(messy_annie[random.randint(0,4)]))
 
 
 def user():
