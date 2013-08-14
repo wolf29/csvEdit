@@ -1,10 +1,10 @@
-{{left_sidebar_enabled,right_sidebar_enabled=False,('message' in globals())}}
+{{left_sidebar_enabled,right_sidebar_enabled=True,('message' in globals())}}
 {{extend 'layout.html'}}
 
 {{if 'message' in globals():}}
 <h3>{{=message}}</h3>
 
-<h4>{{=T('How did you get here?')}}</h4>
+<h4>{{=T('Messages With 300 Chars')}}</h4>
 <ol>
   <li>{{=T('You are successfully running web2py')}}</li>
   <li>{{=XML(T('You visited the url %s', A(request.env.path_info,_href=request.env.path_info)))}}</li>
