@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   reader.py (test version 0.8.0.8)
+#   reader.py (test version 0.8.0.9)
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -465,7 +465,7 @@ def load_events(f, outdir, d):
 		counter = 0
 		counter2 = 0
 		for counter,row in enumerate(reader):
-			print("LOAD_EVENTS \nIP, QID, First_Detected, Last_Detected, Times_Detected, Port, Results\n",row)
+#			print("LOAD_EVENTS \nIP, QID, First_Detected, Last_Detected, Times_Detected, Port, Results\n",row)
 			events2 = (row[0], row[1], row[2], row[3], row[4], row[5], row[6])
 			
 			try:

@@ -43,7 +43,13 @@ def main():
 	outFileT = ''
 	outFileL = '' 
 	outFileC = ''
+	outFileQ = ''
+	outFileM = ''
+	outFileE = ''
 	current_db = filename[:-4]+'.db' 
+	outdir = ''
+	qu = ''
+	outFileQ, outFileM, outFileE,
 
 	while choice != "swallow":
 		os_choice = "100099"
@@ -57,7 +63,8 @@ def main():
 			os_choice = raw_input('      \n     =>  ')
 			
 			if os_choice == "1":
-				(filename, qu, outFileT, outFileL, outFileC, current_db) = process(filename, qu, outFileT, outFileL, outFileC, current_db)
+				(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db) = process(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db)
+			#	(filename, qu, outFileT, outFileL, outFileC, current_db) = process(filename, qu, outFileT, outFileL, outFileC, current_db)
 			elif os_choice == "88":
 				help_me()
 			elif os_choice == "99":
