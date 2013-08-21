@@ -23,17 +23,27 @@
 #  
 
 
-
 from functional_tests import FunctionalTest, ROOT
 
 class TestHomePage (FunctionalTest):
 
-    def test_can_view_home_page(self):
-
+    def setUp(self):
         # John opens his browser and goes to the home-page of the tukker app
-        self.browser.get(ROOT + '/tukker/')
+        self.url = ROOT + '/tukker/'
+        get_browser=self.browser.get(self.url)
 
-        # He's looking at the homepage and sees the Heading "Messages With 300 Chars"
+    def test_can_view_home_page(self):
+        # Let's check if the website was loaded ok => response code == 200
+        response_code = self.get_response_code(self.url)
+        self.assertEqual(response_code, 200)
+
+    def test_has_right_title(self):        
+        # First he looks at the topbar and sees 'MicroPosts On Steroids'
+        
+        title = self.browser.find_element_by_tag_name('title')
+        self.assertEqual('MicroPosts On Steroids', title.text)
+
+    def test_has_right_heading(self):        
+        # He's looking for the Heading "Messages With 300 Chars"
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('Messages With 300 Chars', body.text)
-

@@ -18,10 +18,10 @@ def index():
     if you need a simple wiki simple replace the two lines below with:
     return auth.wiki()
     """
-    messy_annie=['Hello World', 'Oh Hell, Whirled!', 'Your fly is open.', 'Cats won\'t eat that code!', 'Silly Rabbit!']
-    messy_annie_ka=['Welcome to Tuckker2.me', 'Tukker2.me is the fastest', 'Tukker2.me is Pretty']
-    response.flash = T(messy_annie_ka[random.randint(0,2)])
-    return dict(message=T(messy_annie[random.randint(0,4)]))
+    messy_annie=['Hello World', 'Oh Hell, Whirled!', 'Your fly is open.', 'Cats won\'t eat that code!', 'Silly Rabbit!', 'Close your mouth, Sugar.']
+    messy_annie_ka=['Welcome to Tuckker2.me', 'Tukker2.me is the fastest', 'Tukker2.me is Pretty', 'Tukker2.me is Important', 'Tukker2.me is Kind', 'Tukker2.me is Smart']
+    response.flash = T(messy_annie_ka[random.randint(0,5)])
+    return dict(message=T(messy_annie[random.randint(0,5)]))
 
 
 def user():
