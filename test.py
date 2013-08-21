@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#   reader.py (test version 0.8.0.8)
+#   reader.py (test version 0.8.0.9)
 #  
 #  Copyright 2013 Wolf Halton <wolf@sourcefreedom.com>
 #  
@@ -93,27 +93,27 @@ def main():
 				(filename,  outdir, qu, outFileC) = content(filename,  outdir, qu, outFileC)
 			elif os_choice == "2":
 				qu = "win"
-				(filename, outFileT) = titleblock(filename, outFileT)
-				(filename, outFileL) = labels(filename, outFileL)
-				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				(filename, outdir,  outFileT) = titleblock(filename, outdir, outFileT)
+				(filename,  outdir, outFileL) = labels(filename, outdir, outFileL)
+				(filename,  outdir, qu, outFileC) = content(filename, outdir, qu, outFileC)
 			elif os_choice == "3":
 				qu = "other"
-				(filename, outFileT) = titleblock(filename, outFileT)
-				(filename, outFileL) = labels(filename, outFileL)
-				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				(filename,  outdir, outFileT) = titleblock(filename,  outdir, outFileT)
+				(filename,  outdir, outFileL) = labels(filename, outdir, outFileL)
+				(filename,  outdir, qu, outFileC) = content(filename,  outdir, qu, outFileC)
 			elif os_choice == "4":
 				qu = "all"
-				(filename, outFileT) = titleblock(filename, outFileT)
-				(filename, outFileL) = labels(filename, outFileL)
-				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				(filename,  outdir, outFileT) = titleblock(filename,  outdir, outFileT)
+				(filename,  outdir, outFileL) = labels(filename,  outdir, outFileL)
+				(filename,  outdir, qu, outFileC) = content(filename,  outdir, qu, outFileC)
 			elif os_choice == "5":
 				qu = "all"
-				(filename, outFileT) = titleblock(filename, outFileT)
-				(filename, outFileQ) = qidling(filename, qu, outFileQ)
-				(filename, outFileM) = mhost(filename, qu, outFileM)
-				(filename, outFileE) = event(filename, qu, outFileE)
-				(filename, outFileL) = labels(filename, outFileL)
-				(filename, qu, outFileC) = content(filename, qu, outFileC)
+				(filename,  outdir, outFileT) = titleblock(filename,  outdir, outFileT)
+				(filename,  outdir, qu, outFileQ) = qidling(filename,  outdir, qu, outFileQ)
+				(filename,  outdir, qu, outFileM) = mhost(filename,  outdir, qu, outFileM)
+				(filename,  outdir, qu, outFileE) = event(filename,  outdir, qu, outFileE)
+				(filename,  outdir, outFileL) = labels(filename,  outdir, outFileL)
+				(filename,  outdir, qu, outFileC) = content(filename,  outdir, qu, outFileC)
 			elif os_choice == "6":
 				lite_ver = litever(outdir, current_db)
 			elif os_choice == "7":
@@ -121,17 +121,17 @@ def main():
 				load_titles(filename, outdir,  current_db)
 			elif os_choice == "8":
 				qu = "all"
-				(filename, outdir,  outFileT) = titleblock(filename, outdir,  outFileT)
-				(filename, outdir,  outFileL) = labels(filename, outdir,  outFileL)
-				(filename, outdir,  qu, outFileC) = content(filename, outdir,  qu, outFileC)
-				(filename, outdir,  outFileQ) = qidling(filename, outdir,  qu, outFileQ)
-				(filename, outdir,  outFileM) = mhost(filename, outdir, qu, outFileM)
-				(filename, outdir,  outFileE) = event(filename, outdir,  qu, outFileE)
-				load_titles(filename, outdir,  current_db)
-				load_content(outFileC, outdir,  current_db)
-				load_qid(outFileQ, outdir,  current_db)
-				load_mhost(outFileM, outdir,  current_db)
-				load_events(outFileE, outdir,  current_db)
+				(filename, outdir,  outFileT) = titleblock(filename, outdir, outFileT)
+				(filename, outdir,  outFileL) = labels(filename, outdir, outFileL)
+				(filename, outdir,  qu, outFileC) = content(filename, outdir, qu, outFileC)
+				(filename, outdir, qu, outFileQ) = qidling(filename, outdir, qu, outFileQ)
+				(filename, outdir, qu, outFileM) = mhost(filename, outdir, qu, outFileM)
+				(filename, outdir, qu, outFileE) = event(filename, outdir,  qu, outFileE)
+				load_titles(filename, outdir, current_db)
+				load_content(outFileC, outdir, current_db)
+				load_qid(outFileQ, outdir, current_db)
+				load_mhost(outFileM, outdir, qu, current_db)
+				load_events(outFileE, outdir, current_db)
 			elif os_choice == "9":
 				process(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db)
 			elif os_choice == "88":
@@ -209,7 +209,7 @@ def qidling(filename,  outdir, qu, outFileQ):
 						# keeps the last 2 irrelevant rows from printing to the output
 						writer.writerow(rowEdit)
 						written = written +1
-	return (filename, outdir,  outFileQ)
+	return (filename, outdir, qu, outFileQ)
 
 def mhost(filename,  outdir, qu, outFileM):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
@@ -230,7 +230,7 @@ def mhost(filename,  outdir, qu, outFileM):
 						# keeps the last 2 irrelevant rows from printing to the output
 						writer.writerow(rowEdit)
 						written = written +1
-	return (filename, outdir,  outFileM)
+	return (filename, outdir, qu, outFileM)
 
 def event(filename,  outdir, qu, outFileE):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
@@ -252,7 +252,7 @@ def event(filename,  outdir, qu, outFileE):
 						# keeps the last 2 irrelevant rows from printing to the output
 						writer.writerow(rowEdit)
 						written = written +1
-	return (filename,  outdir, outFileE)
+	return (filename,  outdir, qu, outFileE)
 
 def content(filename, outdir,  qu, outFileC):
 	chklist=["OS","Red Hat Enterprise Linux ES 3", "Linux 2.4-2.6 / Embedded Device / F5 Networks Big-IP", "Linux 2.4-2.6 / SonicWALL", "Linux 2.6", "Red Hat Enterprise Linux ES 4", "Red Hat Enterprise Linux Server 5.8", "Linux*"]
@@ -418,8 +418,8 @@ def load_qid(f, outdir,  d):
 	outFileQ = filename
 #	return outFileQ, outdir, current_db
 
-def load_mhost(f, outdir,  d):
-	filename = f
+def load_mhost(filename,  outdir, qu, outFileM):
+	d=outFileM
 	current_db = outdir+'/'+d
 	with open(outdir+'/'+filename, 'rb') as mycsv:
 		con = lite.connect(outdir+'/'+d)
@@ -452,7 +452,7 @@ def load_mhost(f, outdir,  d):
 				if con:
 					con.close() 
 	outFileM = filename
-#	return outFileM, outdir, current_db
+	return outFileM, outdir, qu, current_db
 
 def load_events(f, outdir, d):
 	filename = f
@@ -498,13 +498,14 @@ def process(filename, outdir, qu, outFileT, outFileL, outFileC, outFileQ, outFil
 	(filename, outdir,  outFileT) = titleblock(filename, outdir,  outFileT)
 	(filename, outdir,  outFileL) = labels(filename, outdir,  outFileL)
 	(filename, outdir,  qu, outFileC) = content(filename, outdir,  qu, outFileC)
-	(filename, outdir,  outFileQ) = qidling(filename, outdir,  qu, outFileQ)
-	(filename, outdir,  outFileM) = mhost(filename, outdir, qu, outFileM)
-	(filename, outdir,  outFileE) = event(filename, outdir,  qu, outFileE)
-	load_titles(filename, outdir,  current_db)
+	(filename, outdir, qu, outFileQ) = qidling(filename, outdir,  qu, outFileQ)
+	(filename, outdir,  qu, outFileM) = mhost(filename, outdir, qu, outFileM)
+	(filename, outdir,  qu, outFileE) = event(filename, outdir,  qu, outFileE)
+	load_titles(filename, outdir, 
+	 current_db)
 	load_content(outFileC, outdir,  current_db)
 	load_qid(outFileQ, outdir,  current_db)
-	load_mhost(outFileM, outdir,  current_db)
+	load_mhost(outFileM, outdir, qu, current_db)
 	load_events(outFileE, outdir,  current_db)
 
 	return(filename, qu, outFileT, outFileL, outFileC, outFileQ, outFileM, outFileE, current_db)
