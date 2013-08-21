@@ -1,69 +1,54 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*- 
 
 #########################################################################
 ## This scaffolding model makes your app work on Google App Engine too
-## File is released under public domain and you can use without limitations
 #########################################################################
 
-## if SSL/HTTPS is properly configured and you want all HTTP requests to
-## be redirected to HTTPS, uncomment the line below:
-# request.requires_https()
-
-if not request.env.web2py_runtime_gae:
-    ## if NOT running on Google App Engine use SQLite or other DB
-    db = DAL('sqlite://storage.sqlite',pool_size=1,check_reserved=['all'])
+if request.env.web2py_runtime_gae:            # if running on Google App Engine
+    db = DAL('gae')                           # connect to Google BigTable
+    session.connect(request, response, db=db) # and store sessions and tickets there
+    ### or use the following lines to store sessions in Memcache
+    # from gluon.contrib.memdb import MEMDB
+    # from google.appengine.api.memcache import Client
+    # session.connect(request, response, db=MEMDB(Client())
 else:
-    ## connect to Google BigTable (optional 'google:datastore://namespace')
-    db = DAL('google:datastore')
-    ## store sessions and tickets there
-    session.connect(request, response, db=db)
-    ## or store session in Memcache, Redis, etc.
-    ## from gluon.contrib.memdb import MEMDB
-    ## from google.appengine.api.memcache import Client
-    ## session.connect(request, response, db = MEMDB(Client()))
-
-## by default give a view/generic.extension to all actions from localhost
-## none otherwise. a pattern can be 'controller/function.extension'
-response.generic_patterns = ['*'] if request.is_local else []
-## (optional) optimize handling of static files
-# response.optimize_css = 'concat,minify,inline'
-# response.optimize_js = 'concat,minify,inline'
+    db = DAL('sqlite://storage.sqlite')                           # else use a normal relational database
+##db = DAL('mysql://root:life@localhost:1234/filemanager')       # if not, use SQLite or other DB
+## if no need for session
+# session.forget()
 
 #########################################################################
-## Here is sample code if you need for
+## Here is sample code if you need for 
 ## - email capabilities
 ## - authentication (registration, login, logout, ... )
 ## - authorization (role based authorization)
 ## - services (xml, csv, json, xmlrpc, jsonrpc, amf, rss)
-## - old style crud actions
-## (more options discussed in gluon/tools.py)
+## - crud actions
+## comment/uncomment as needed
+
+from gluon.tools import *
+auth=Auth(globals(),db)                      # authentication/authorization
+auth.settings.hmac_key='sha512:83facfee-eaa5-4e27-9c31-6c4adfbc2e7f'
+auth.define_tables()                         # creates all needed tables
+crud=Crud(globals(),db)                      # for CRUD helpers using auth
+service=Service(globals())                   # for json, xml, jsonrpc, xmlrpc, amfrpc
+
+# crud.settings.auth=auth                      # enforces authorization on crud
+# mail=Mail()                                  # mailer
+# mail.settings.server='smtp.gmail.com:587'    # your SMTP server
+# mail.settings.sender='you@gmail.com'         # your email
+# mail.settings.login='username:password'      # your credentials or None
+# auth.settings.mailer=mail                    # for user email verification
+# auth.settings.registration_requires_verification = True
+# auth.settings.registration_requires_approval = True
+# auth.messages.verify_email = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['verify_email'])+'/%(key)s to verify your email'
+# auth.settings.reset_password_requires_verification = True
+# auth.messages.reset_password = 'Click on the link http://'+request.env.http_host+URL(r=request,c='default',f='user',args=['reset_password'])+'/%(key)s to reset your password'
+## more options discussed in gluon/tools.py
 #########################################################################
 
-from gluon.tools import Auth, Crud, Service, PluginManager, prettydate
-auth = Auth(db)
-crud, service, plugins = Crud(db), Service(), PluginManager()
-
-## create all tables needed by auth if not custom tables
-auth.define_tables(username=False, signature=False)
-
-## configure email
-mail = auth.settings.mailer
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'
-mail.settings.sender = 'you@gmail.com'
-mail.settings.login = 'username:password'
-
-## configure auth policy
-auth.settings.registration_requires_verification = False
-auth.settings.registration_requires_approval = False
-auth.settings.reset_password_requires_verification = True
-
-## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
-## register with janrain.com, write your domain:api_key in private/janrain.key
-from gluon.contrib.login_methods.rpx_account import use_janrain
-use_janrain(auth, filename='private/janrain.key')
-
 #########################################################################
-## Define your tables below (or better in another model file) for example
+## Define your tables below, for example
 ##
 ## >>> db.define_table('mytable',Field('myfield','string'))
 ##
@@ -78,6 +63,70 @@ use_janrain(auth, filename='private/janrain.key')
 ## >>> rows=db(db.mytable.myfield=='value').select(db.mytable.ALL)
 ## >>> for row in rows: print row.id, row.myfield
 #########################################################################
+import datetime
+now=datetime.datetime.now()
+if auth.is_logged_in():
+   me=auth.user.id
+else:
+   me=None
 
-## after defining tables, uncomment below to enable auditing
-# auth.enable_record_versioning(db)
+db.define_table('allfiles',
+    Field('filename'),
+    Field('filepath'),
+    Field('parentpath'),
+    Field('filetype'),
+    Field('file','upload'),
+    Field('content','text'),
+    Field('datecreated','datetime',default=now),
+    Field('datemodified','datetime',default=now),
+    Field('filesize','integer'),
+    Field('user',db.auth_user,default=me))
+
+db.define_table('test_detail',
+    Field('Corp','text'),
+    Field('Address_1','text'),
+    Field('Address_2','text'),
+    Field('City','text'),
+    Field('State','text'),
+    Field('Country','text'),
+    Field('Postal_Code','text'),
+    Field('Requester','text'),
+    Field('Code_1','text'),
+    Field('Role','text'),
+    Field('Asset_Groups','text'),
+    Field('IPs','text'),
+    Field('Active_Hosts','integer'),
+    Field('Hosts_Matching_Filters','integer'),
+    Field('Trend_Analysis','text'),
+    Field('Date_Range','text'),
+    Field('Asset_Tags','text'))
+
+db.define_table('qid_def',
+    Field('QID','text'),
+    Field('CVE_ID','text'),
+    Field('Vendor_Reference','text'),
+    Field('Bug_Traq','text'),
+    Field('CVSS','float'),
+    Field('CVSS_Base','float'), 
+    Field('CVSS_Temporal','float'),
+    Field('Threat','text'),
+    Field('Impact','text'),
+    Field('Solution','text'),
+    Field('Exploitability','text'),
+    Field('Associated_Malware','text'),
+    Field('PCI_Vuln','text'))
+
+db.define_table('mhost',
+    Field('IP','text'),
+    Field('NetBIOS','text'),
+    Field('OS','text'))
+
+db.define_table('load_events',
+    Field('IP','text'),
+    Field('QID','text'),
+    Field('First_Detected_DATE','datetime'),
+    Field('Last_Detected_DATE','datetime'),
+    Field('Times Detected','integer'),
+    Field('Remediation_Deadline','datetime'),
+    Field('Port','text'),
+    Field('Results','text'))

@@ -1,0 +1,16 @@
+timestamp: 2013-08-16T08:05:21.013185
+CREATE TABLE category(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512)
+);
+success!
+timestamp: 2013-08-16T08:05:21.258886
+CREATE TABLE recipe(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    description CHAR(256),
+    category INTEGER REFERENCES category (id) ON DELETE CASCADE,
+    date DATE,
+    instructions TEXT
+);
+success!
